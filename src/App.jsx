@@ -159,68 +159,64 @@ function App() {
   // Get LogOut icon
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100 transition-colors duration-300">
-      {/* Theme toggle button */}
-      
-      {(() => {
-        // Don't render routes until initialization is complete
-        if (!isInitialized) {
-          return <div className="flex items-center justify-center min-h-screen">Initializing application...</div>;
-        }
-        return (
-          <AuthContext.Provider value={authMethods}>
-            <div className="min-h-screen bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100 transition-colors duration-300">
-      
-      <motion.button 
-        whileTap={{ scale: 0.9 }}
-        onClick={toggleDarkMode}
-        className="fixed top-4 right-4 z-50 p-2 rounded-full bg-surface-200 dark:bg-surface-700 text-surface-700 dark:text-surface-200 shadow-soft hover:bg-surface-300 dark:hover:bg-surface-600 transition-all duration-300"
-        aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-      >
-        {darkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
-      </motion.button>
+    <>
+      {!isInitialized ? (
+        <div className="flex items-center justify-center min-h-screen bg-surface-50 dark:bg-surface-900">
+          <div className="text-surface-800 dark:text-surface-100">Initializing application...</div>
+        </div>
+      ) : (
+        <AuthContext.Provider value={authMethods}>
+          <div className="min-h-screen bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100 transition-colors duration-300">
+            {/* Theme toggle button */}
+            <motion.button 
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleDarkMode}
+              className="fixed top-4 right-4 z-50 p-2 rounded-full bg-surface-200 dark:bg-surface-700 text-surface-700 dark:text-surface-200 shadow-lg hover:bg-surface-300 dark:hover:bg-surface-600 transition-all duration-300"
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {darkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
+            </motion.button>
 
-      {/* Logout button (only shown when authenticated) */}
-      {isAuthenticated && (
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          onClick={handleLogout}
-          className="fixed top-4 right-16 z-50 p-2 rounded-full bg-surface-200 dark:bg-surface-700 text-surface-700 dark:text-surface-200 shadow-soft hover:bg-surface-300 dark:hover:bg-surface-600 transition-all duration-300"
-          aria-label="Logout"
-        >
-          <LogOutIcon size={20} />
-        </motion.button>
+            {/* Logout button (only shown when authenticated) */}
+            {isAuthenticated && (
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={handleLogout}
+                className="fixed top-4 right-16 z-50 p-2 rounded-full bg-surface-200 dark:bg-surface-700 text-surface-700 dark:text-surface-200 shadow-lg hover:bg-surface-300 dark:hover:bg-surface-600 transition-all duration-300"
+                aria-label="Logout"
+              >
+                <LogOutIcon size={20} />
+              </motion.button>
+            )}
+            
+            <Routes>
+              <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/callback" element={<Callback />} />
+              <Route path="/error" element={<ErrorPage />} />
+              <Route path="/dashboard" element={isAuthenticated ? <Home /> : <Login />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            
+            <ToastContainer 
+              position="bottom-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme={darkMode ? "dark" : "light"}
+              toastClassName="bg-surface-50 dark:bg-surface-800 text-surface-800 dark:text-surface-100"
+            /> 
+            <div id="authentication" className="hidden"></div>
+          </div>
+        </AuthContext.Provider>
       )}
-      
-      <Routes>
-        <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/callback" element={<Callback />} />
-        <Route path="/error" element={<ErrorPage />} />
-        <Route path="/dashboard" element={isAuthenticated ? <Home /> : <Login />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      
-      <ToastContainer 
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={darkMode ? "dark" : "light"}
-        toastClassName="bg-surface-50 dark:bg-surface-800 text-surface-800 dark:text-surface-100"
-      /> 
-              <div id="authentication" className="hidden"></div>
-            </div>
-          </AuthContext.Provider>
-        );
-      })()}
-    </div>
+    </>
   );
 }
 
