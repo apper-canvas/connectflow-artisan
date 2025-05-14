@@ -138,7 +138,6 @@ function App() {
   };
   
   // Get LogOut icon
-  const LogOutIcon = getIcon('LogOut');
 
   return (
     <div className="min-h-screen bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100 transition-colors duration-300">
