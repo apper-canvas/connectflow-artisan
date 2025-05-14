@@ -10,7 +10,7 @@ import getIcon from './utils/iconUtils';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Callback from './pages/Callback';
-import ErrorPage from './pages/ErrorPage';
+import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 
@@ -74,10 +74,10 @@ function App() {
 				if (!currentPath.includes('/login') && !currentPath.includes('/signup')) {
 					navigate(currentPath);
 				} else {
-					navigate('/dashboard');
+					navigate('/');
 				}
 			} else {
-				navigate('/dashboard');
+				navigate('/');
 			}
 			// Store user information in Redux
 			dispatch(setUser(JSON.parse(JSON.stringify(user))));
@@ -194,13 +194,13 @@ function App() {
       )}
       
       <Routes>
-        <Route path="/" element={isAuthenticated ? <Dashboard /> : <Login />} />
+        <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/callback" element={<Callback />} />
         <Route path="/error" element={<ErrorPage />} />
-        <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Login />} />
-        <Route path="*" element={isAuthenticated ? <NotFound /> : <Login />} />
+        <Route path="/dashboard" element={isAuthenticated ? <Home /> : <Login />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       
       <ToastContainer 

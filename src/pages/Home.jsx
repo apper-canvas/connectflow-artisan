@@ -10,8 +10,8 @@ import Settings from '../components/Settings';
 import HelpSupport from '../components/HelpSupport';
 
 function Home() {
-  const { user } = useSelector(state => state.auth);
-  const [activeTab, setActiveTab] = useState('dashboard'); 
+  const { user } = useSelector(state => state.user);
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Icon declarations
