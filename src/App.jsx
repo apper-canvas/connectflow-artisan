@@ -133,8 +133,9 @@ function App() {
   };
   
   const handleLogout = () => {
-    dispatch(logout());
-    toast.success('Logged out successfully');
+    // Use the proper logout method defined in authMethods
+    authMethods.logout();
+    // Toast is already handled in the logout method
   };
   
   // Get LogOut icon
@@ -142,6 +143,35 @@ function App() {
   return (
     <div className="min-h-screen bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100 transition-colors duration-300">
       {/* Theme toggle button */}
+      
+      {/* Authentication methods to share via context */}
+      {/* Define authMethods within the component */}
+      {(() => {
+        const authMethods = {
+          isInitialized,
+          logout: async () => {
+            try {
+              const { ApperUI } = window.ApperSDK;
+              await ApperUI.logout();
+              dispatch(clearUser());
+              navigate('/login');
+              toast.success('Logged out successfully');
+            } catch (error) {
+              console.error("Logout failed:", error);
+              toast.error("Logout failed: " + (error.message || "Unknown error"));
+            }
+          }
+        };
+        
+        // Don't render routes until initialization is complete
+        if (!isInitialized) {
+          return <div className="flex items-center justify-center min-h-screen">Initializing application...</div>;
+        }
+        
+        return (
+          <AuthContext.Provider value={authMethods}>
+            <div className="min-h-screen bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100 transition-colors duration-300">
+      
       <motion.button 
         whileTap={{ scale: 0.9 }}
         onClick={toggleDarkMode}
@@ -164,13 +194,16 @@ function App() {
       )}
       
       <Routes>
-        <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
+        <Route path="/" element={isAuthenticated ? <Dashboard /> : <Login />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/callback" element={<Callback />} />
+        <Route path="/error" element={<ErrorPage />} />
+        <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Login />} />
         <Route path="*" element={isAuthenticated ? <NotFound /> : <Login />} />
       </Routes>
       
-      <ToastContainer
+      <ToastContainer 
         position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
@@ -182,41 +215,14 @@ function App() {
         pauseOnHover
         theme={darkMode ? "dark" : "light"}
         toastClassName="bg-surface-50 dark:bg-surface-800 text-surface-800 dark:text-surface-100"
-      />
+      /> 
+              <div id="authentication" className="hidden"></div>
+            </div>
+          </AuthContext.Provider>
+        );
+      })()}
     </div>
   );
 }
 
 export default App;
-  // Authentication methods to share via context
-  const authMethods = {
-    isInitialized,
-    logout: async () => {
-      try {
-        const { ApperUI } = window.ApperSDK;
-        await ApperUI.logout();
-        dispatch(clearUser());
-        navigate('/login');
-        toast.success('Logged out successfully');
-      } catch (error) {
-        console.error("Logout failed:", error);
-        toast.error("Logout failed: " + (error.message || "Unknown error"));
-      }
-    }
-  // Don't render routes until initialization is complete
-  if (!isInitialized) {
-    return <div className="flex items-center justify-center min-h-screen">Initializing application...</div>;
-  }
-    <AuthContext.Provider value={authMethods}>
-      <div className="min-h-screen bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100 transition-colors duration-300">
-          onClick={authMethods.logout}
-      <div id="authentication" className="hidden"></div>
-        <Route path="/" element={isAuthenticated ? <Dashboard /> : <Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/callback" element={<Callback />} />
-        <Route path="/error" element={<ErrorPage />} />
-        <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Login />} />
-        <Route path="*" element={<NotFound />} />
-        theme={darkMode ? 'dark' : 'light'}
-        toastClassName="bg-surface-50 dark:bg-surface-800 text-surface-800 dark:text-surface-100"
-    </AuthContext.Provider>
