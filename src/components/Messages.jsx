@@ -8,32 +8,6 @@ import { selectThread, sendMessage, createThread } from '../features/messages/me
 import MessageThread from './MessageThread';
 
 function Messages() {
-  const dispatch = useDispatch();
-  const { threads, selectedThreadId } = useSelector(state => state.messages);
-  const { user } = useSelector(state => state.auth);
-  const customers = useSelector(state => state.customers?.customers) || sampleCustomers;
-  
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredThreads, setFilteredThreads] = useState([]);
-  const [selectedThread, setSelectedThread] = useState(null);
-  const [isComposeOpen, setIsComposeOpen] = useState(false);
-  const [composeData, setComposeData] = useState({
-    customerId: '',
-    subject: '',
-    message: ''
-  });
-  const [showUnreadOnly, setShowUnreadOnly] = useState(false);
-  
-  // Icons
-  const SearchIcon = getIcon('Search');
-  const PlusIcon = getIcon('Plus');
-  const FilterIcon = getIcon('Filter');
-  const XIcon = getIcon('X');
-  const XCircleIcon = getIcon('XCircle');
-  const SendIcon = getIcon('Send');
-  const UserIcon = getIcon('User');
-  const CheckIcon = getIcon('Check');
-
   // Sample customers to use if not in state yet
   const sampleCustomers = [
     {
@@ -67,6 +41,32 @@ function Messages() {
       company: 'Stark Industries',
     }
   ];
+
+  const dispatch = useDispatch();
+  const { threads, selectedThreadId } = useSelector(state => state.messages);
+  const { user } = useSelector(state => state.auth);
+  const customers = useSelector(state => state.customers?.customers) || sampleCustomers;
+  
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredThreads, setFilteredThreads] = useState([]);
+  const [selectedThread, setSelectedThread] = useState(null);
+  const [isComposeOpen, setIsComposeOpen] = useState(false);
+  const [composeData, setComposeData] = useState({
+    customerId: '',
+    subject: '',
+    message: ''
+  });
+  const [showUnreadOnly, setShowUnreadOnly] = useState(false);
+  
+  // Icons
+  const SearchIcon = getIcon('Search');
+  const PlusIcon = getIcon('Plus');
+  const FilterIcon = getIcon('Filter');
+  const XIcon = getIcon('X');
+  const XCircleIcon = getIcon('XCircle');
+  const SendIcon = getIcon('Send');
+  const UserIcon = getIcon('User');
+  const CheckIcon = getIcon('Check');
 
   // Filter threads based on search term and unread filter
   useEffect(() => {
