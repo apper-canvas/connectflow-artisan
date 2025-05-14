@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Callback from './pages/Callback';
 import Home from './pages/Home';
+import ErrorPage from './pages/ErrorPage';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 
