@@ -121,6 +121,23 @@ function App() {
     setIsInitialized(true);
   }, [dispatch, navigate]);
 
+  // Authentication methods to share via context
+  const authMethods = {
+    isInitialized,
+    logout: async () => {
+      try {
+        const { ApperUI } = window.ApperSDK;
+        await ApperUI.logout();
+        dispatch(clearUser());
+        navigate('/login');
+        toast.success('Logged out successfully');
+      } catch (error) {
+        console.error("Logout failed:", error);
+        toast.error("Logout failed: " + (error.message || "Unknown error"));
+      }
+    }
+  };
+  
   const toggleDarkMode = () => {
     if (darkMode) {
       document.documentElement.classList.remove('dark');
@@ -145,30 +162,11 @@ function App() {
     <div className="min-h-screen bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100 transition-colors duration-300">
       {/* Theme toggle button */}
       
-      {/* Authentication methods to share via context */}
-      {/* Define authMethods within the component */}
       {(() => {
-        const authMethods = {
-          isInitialized,
-          logout: async () => {
-            try {
-              const { ApperUI } = window.ApperSDK;
-              await ApperUI.logout();
-              dispatch(clearUser());
-              navigate('/login');
-              toast.success('Logged out successfully');
-            } catch (error) {
-              console.error("Logout failed:", error);
-              toast.error("Logout failed: " + (error.message || "Unknown error"));
-            }
-          }
-        };
-        
         // Don't render routes until initialization is complete
         if (!isInitialized) {
           return <div className="flex items-center justify-center min-h-screen">Initializing application...</div>;
         }
-        
         return (
           <AuthContext.Provider value={authMethods}>
             <div className="min-h-screen bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100 transition-colors duration-300">
