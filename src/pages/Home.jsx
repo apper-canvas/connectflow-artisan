@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import getIcon from '../utils/iconUtils';
 import MainFeature from '../components/MainFeature';
 
 function Home() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const { user } = useSelector(state => state.auth);
+  const [activeTab, setActiveTab] = useState('dashboard'); 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Icon declarations
@@ -84,12 +86,12 @@ function Home() {
           {/* User Profile */}
           <div className="p-4 border-t border-surface-200 dark:border-surface-700">
             <div className="flex items-center">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-secondary text-white flex items-center justify-center font-bold">
-                JD
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-secondary text-white flex items-center justify-center font-bold text-sm">
+                {user ? `${user.firstName[0]}${user.lastName[0]}` : 'JD'}
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium">John Doe</p>
-                <p className="text-xs text-surface-500">Sales Manager</p>
+                <p className="text-sm font-medium">{user ? `${user.firstName} ${user.lastName}` : 'John Doe'}</p>
+                <p className="text-xs text-surface-500">{user?.role || 'User'}</p>
               </div>
             </div>
           </div>
@@ -131,7 +133,7 @@ function Home() {
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold">Welcome back, John</h1>
+                  <h1 className="text-2xl sm:text-3xl font-bold">Welcome back, {user?.firstName || 'User'}</h1>
                   <p className="text-surface-600 dark:text-surface-400 mt-1">Here's what's happening with your customer relationships today.</p>
                 </div>
                 <div className="flex gap-2">

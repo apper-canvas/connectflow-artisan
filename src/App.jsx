@@ -1,17 +1,25 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { motion } from 'framer-motion';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from './features/auth/authSlice';
 import getIcon from './utils/iconUtils';
 
 // Pages
 import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import NotFound from './pages/NotFound';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const MoonIcon = getIcon('Moon');
   const SunIcon = getIcon('Sun');
+
+  // Auth state
+  const { isAuthenticated } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   // Check for user preference
   useEffect(() => {
@@ -37,6 +45,14 @@ function App() {
       setDarkMode(true);
     }
   };
+  
+  const handleLogout = () => {
+    dispatch(logout());
+    toast.success('Logged out successfully');
+  };
+  
+  // Get LogOut icon
+  const LogOutIcon = getIcon('LogOut');
 
   return (
     <div className="min-h-screen bg-surface-50 dark:bg-surface-900 text-surface-800 dark:text-surface-100 transition-colors duration-300">
@@ -49,10 +65,24 @@ function App() {
       >
         {darkMode ? <SunIcon size={20} /> : <MoonIcon size={20} />}
       </motion.button>
+
+      {/* Logout button (only shown when authenticated) */}
+      {isAuthenticated && (
+        <motion.button
+          whileTap={{ scale: 0.9 }}
+          onClick={handleLogout}
+          className="fixed top-4 right-16 z-50 p-2 rounded-full bg-surface-200 dark:bg-surface-700 text-surface-700 dark:text-surface-200 shadow-soft hover:bg-surface-300 dark:hover:bg-surface-600 transition-all duration-300"
+          aria-label="Logout"
+        >
+          <LogOutIcon size={20} />
+        </motion.button>
+      )}
       
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={isAuthenticated ? <NotFound /> : <Login />} />
       </Routes>
       
       <ToastContainer
