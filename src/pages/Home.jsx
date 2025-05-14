@@ -7,6 +7,7 @@ import MainFeature from '../components/MainFeature';
 import Calendar from '../components/Calendar';
 import Messages from '../components/Messages';
 import Settings from '../components/Settings';
+import HelpSupport from '../components/HelpSupport';
 
 function Home() {
   const { user } = useSelector(state => state.auth);
@@ -211,7 +212,14 @@ function Home() {
               <Settings />
             </div>
           )}
-
+          
+          {activeTab === 'help' && (
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-6">Help & Support</h1>
+              <p className="text-surface-600 dark:text-surface-400 mb-6">Get help, browse documentation, and contact our support team.</p>
+              <HelpSupport />
+            </div>
+          )}
 
           {!['dashboard', 'customers', 'calendar', 'messages', 'settings'].includes(activeTab) && (
             <div className="flex flex-col items-center justify-center h-full">
