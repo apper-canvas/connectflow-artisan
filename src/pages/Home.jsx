@@ -206,7 +206,6 @@ function Home() {
 
 
           {!['dashboard', 'customers', 'calendar', 'messages'].includes(activeTab) && (
-          {!['dashboard', 'customers', 'calendar'].includes(activeTab) && (
             <div className="flex flex-col items-center justify-center h-full">
               <div className="text-6xl mb-4">✨</div>
               <h2 className="text-2xl font-bold mb-2">Coming Soon!</h2>
