@@ -7,8 +7,11 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     calendar: calendarReducer,
+import settingsReducer from './features/settings/settingsSlice';
     messages: messagesReducer,
   },
   devTools: true
 });
 export default store;
+    messages: messagesReducer,
+    settings: settingsReducer

@@ -6,6 +6,7 @@ import getIcon from '../utils/iconUtils';
 import MainFeature from '../components/MainFeature';
 import Calendar from '../components/Calendar';
 import Messages from '../components/Messages';
+import Settings from '../components/Settings';
 
 function Home() {
   const { user } = useSelector(state => state.auth);
@@ -40,7 +41,6 @@ function Home() {
     setActiveTab(tabId);
     setSidebarOpen(false);
     if (tabId !== 'dashboard' && tabId !== 'customers' && tabId !== 'calendar') {
-      toast.info(`${tabId.charAt(0).toUpperCase() + tabId.slice(1)} feature coming soon!`);
     }
   };
 
@@ -203,9 +203,17 @@ function Home() {
               <Messages />
             </div>
           )}
+          
+          {activeTab === 'settings' && (
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-6">Settings</h1>
+              <p className="text-surface-600 dark:text-surface-400 mb-6">Manage your account preferences and application settings.</p>
+              <Settings />
+            </div>
+          )}
 
 
-          {!['dashboard', 'customers', 'calendar', 'messages'].includes(activeTab) && (
+          {!['dashboard', 'customers', 'calendar', 'messages', 'settings'].includes(activeTab) && (
             <div className="flex flex-col items-center justify-center h-full">
               <div className="text-6xl mb-4">✨</div>
               <h2 className="text-2xl font-bold mb-2">Coming Soon!</h2>
