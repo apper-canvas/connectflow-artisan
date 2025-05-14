@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import getIcon from '../utils/iconUtils';
 import MainFeature from '../components/MainFeature';
+import Calendar from '../components/Calendar';
 
 function Home() {
   const { user } = useSelector(state => state.auth);
@@ -37,7 +38,7 @@ function Home() {
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
     setSidebarOpen(false);
-    if (tabId !== 'dashboard' && tabId !== 'customers') {
+    if (tabId !== 'dashboard' && tabId !== 'customers' && tabId !== 'calendar') {
       toast.info(`${tabId.charAt(0).toUpperCase() + tabId.slice(1)} feature coming soon!`);
     }
   };
@@ -187,8 +188,16 @@ function Home() {
             </div>
           )}
 
+          {activeTab === 'calendar' && (
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-6">Calendar</h1>
+              <p className="text-surface-600 dark:text-surface-400 mb-6">Manage your appointments, meetings, and follow-ups.</p>
+              <Calendar />
+            </div>
+          )}
+
           {/* Other tabs just show a message since they're not implemented yet */}
-          {!['dashboard', 'customers'].includes(activeTab) && (
+          {!['dashboard', 'customers', 'calendar'].includes(activeTab) && (
             <div className="flex flex-col items-center justify-center h-full">
               <div className="text-6xl mb-4">✨</div>
               <h2 className="text-2xl font-bold mb-2">Coming Soon!</h2>
