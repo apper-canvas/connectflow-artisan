@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import getIcon from '../utils/iconUtils';
 import MainFeature from '../components/MainFeature';
 import Calendar from '../components/Calendar';
+import Messages from '../components/Messages';
 
 function Home() {
   const { user } = useSelector(state => state.auth);
@@ -195,8 +196,16 @@ function Home() {
               <Calendar />
             </div>
           )}
+          {activeTab === 'messages' && (
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-6">Messages</h1>
+              <p className="text-surface-600 dark:text-surface-400 mb-6">Communicate with your customers and track conversations.</p>
+              <Messages />
+            </div>
+          )}
 
-          {/* Other tabs just show a message since they're not implemented yet */}
+
+          {!['dashboard', 'customers', 'calendar', 'messages'].includes(activeTab) && (
           {!['dashboard', 'customers', 'calendar'].includes(activeTab) && (
             <div className="flex flex-col items-center justify-center h-full">
               <div className="text-6xl mb-4">✨</div>
