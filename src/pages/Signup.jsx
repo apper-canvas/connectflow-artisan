@@ -1,19 +1,18 @@
 import { useEffect } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../App';
 
-const Login = () => {
-  const navigate = useNavigate();
+function Signup() {
   const [searchParams] = useSearchParams();
   const { isInitialized } = useContext(AuthContext);
   const redirectPath = searchParams.get('redirect');
 
   useEffect(() => {
     if (isInitialized) {
-      // Show login UI in this component
+      // Show signup UI in this component
       const { ApperUI } = window.ApperSDK;
-      ApperUI.showLogin("#authentication");
+      ApperUI.showSignup("#authentication");
     }
   }, [isInitialized]);
 
@@ -21,24 +20,24 @@ const Login = () => {
     <div className="flex min-h-screen items-center justify-center bg-surface-50 dark:bg-surface-900">
       <div className="w-full max-w-md space-y-8 p-6 bg-white dark:bg-surface-800 rounded-lg shadow-md">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-surface-800 dark:text-surface-100">Welcome Back</h1>
-          <p className="mt-2 text-surface-600 dark:text-surface-400">Sign in to your ConnectFlow account</p>
+          <h1 className="text-3xl font-bold text-surface-800 dark:text-surface-100">Create Account</h1>
+          <p className="mt-2 text-surface-600 dark:text-surface-400">Sign up for your ConnectFlow account</p>
         </div>
         <div id="authentication" className="min-h-[400px]"></div>
         <div className="text-center mt-4">
           <p className="text-sm text-surface-600 dark:text-surface-400">
-            Don't have an account?{' '}
+            Already have an account?{' '}
             <Link 
-              to={redirectPath ? `/signup?redirect=${redirectPath}` : "/signup"} 
+              to={redirectPath ? `/login?redirect=${redirectPath}` : "/login"} 
               className="font-medium text-primary hover:text-primary-dark"
             >
-              Sign up
+              Sign in
             </Link>
           </p>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default Login;
+export default Signup;
