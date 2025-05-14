@@ -6,7 +6,7 @@ import messagesReducer from './features/messages/messagesSlice';
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    calendar: calendarReducer
+    calendar: calendarReducer,
     messages: messagesReducer,
   },
   devTools: true
